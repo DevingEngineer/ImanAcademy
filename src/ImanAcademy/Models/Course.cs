@@ -1,35 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-
 namespace ImanAcademy.Models;
 
-public partial class Course
+public class Course
 {
-    public int CourseId { get; set; }
+    public Guid Id { get; set; }
 
-    public int? InstructorId { get; set; }
-
-    public int? CategoryId { get; set; }
-
+    // ----- Metadata (flattened onto the entity — see notes) -----
     public string Title { get; set; } = null!;
+    public string Slug { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public string? ThumbnailUrl { get; set; }
+    public List<string> Tags { get; set; } = new();   // primitive collection -> JSON column
+    public CourseLevel Level { get; set; }
+    public string Language { get; set; } = null!;
+    public decimal Price { get; set; }
+    public string Currency { get; set; } = null!;      // e.g. "USD"
+    public ContentStatus Status { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
-    public string? Description { get; set; }
-
-    public decimal? Price { get; set; }
-
-    public string? DifficultyLevel { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public virtual Category? Category { get; set; }
-
-    public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
-
-    public virtual User? Instructor { get; set; }
-
-    public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
-
-    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
-
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+    // ----- Relationships -----
+    public ICollection<Module> Modules { get; set; } = new List<Module>();
+    public ICollection<CourseInstructor> CourseInstructors { get; set; } = new List<CourseInstructor>();
 }
